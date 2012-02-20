@@ -49,10 +49,11 @@ get "/user/:user" do |user|
   @record = quiz_response['records'][0]
   @id = quiz_response['records'][0]['Id'] 
   
+  # after this we need to subscribe
   haml :test
 end
 
-get '/test-client' do  
+get '/subscribe/:user' do |user|  
   client = Faye::Client.new('https://na14.salesforce.com/cometd')
 
 
