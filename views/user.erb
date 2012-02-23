@@ -5,7 +5,7 @@
     <script type="text/javascript">
       $(function() {
         var cometd = new Faye.Client('http://quizville-cometd.herokuapp.com/cometd');
-        cometd.subscribe("/q/<%= @quiz['Id'] %>" function(data) {
+        cometd.subscribe("/q/<%= @quiz['Id'] %>", function(data) {
           console.log(data);
           $('#answers').append(data);
         });
