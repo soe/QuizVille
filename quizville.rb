@@ -1,92 +1,62 @@
-require 'digest'
 require 'sinatra'
-require 'haml'
 require 'curb'
-require 'eventmachine'
 require 'json'
 require 'cgi'
 
 helpers do
-  def faye_path
-    "#{request.scheme}://#{request.host}:9001/faye"
-  end
-
-  def faye_js_path
-    faye_path + ".js"
-  end
-
-  def room_url(room)
-    "#{request.scheme}://#{request.host}:#{request.port}/r/#{room}"
-  end
 end
 
-def generate_room
-  Digest::MD5.hexdigest(Time.now.to_f.to_s).slice(0, 8)
+def get_oauth_token
+  # get oauth token
+  c = Curl::Easy.http_post('https://login.salesforce.com/services/oauth2/token',
+    'grant_type=password&client_id=3MVG9rFJvQRVOvk4cxTJa7DLkKTD8NuAg5AexmhUWE.Yv.W4.WgDugtPKYczI602iJPhbd6PI0w91GlaOSl_l&client_secret=4614924466188346354&username=soe%40soe.im.streamingapi&password=FORCE2012@@jSbIygQ9XKPulmIeEYPPI2lDl'
+  )
+  
+  return JSON.parse(c.body_str)
 end
 
-get '/' do  
-  haml :index
+def get_quizzes(user = false, date = "today")
+  oauth_response = get_oauth_token
+
+  if date == "today"
+    date = "2012-02-20"
+  end
+  
+  # SOQL query for Quick_Quiz__c 
+  query = "SELECT Id, Name, Quiz_Date__c, Number_Correct__c, Total_Time__c, Member__r.Name FROM Quick_Quiz__c WHERE Quiz_Date__c = #{date}"
+ 
+  if user
+    query += " AND Member__r.Name = '#{user}'"
+  end
+  
+  c = Curl::Easy.http_get("#{oauth_response['instance_url']}/services/data/v24.0/query?q=#{CGI::escape(query)}"
+  ) do |curl|
+    curl.headers['Authorization'] = "OAuth #{oauth_response['access_token']}"
+  end
+        
+  return JSON.parse(c.body_str)
+end
+
+get '/' do
+  # list out available quizzes taken by users by date or TODAY   
+  quizzes = get_quizzes()
+  
+  @quizzes = quizzes['records']
+  
+  erb :index
 end
 
 get "/user/:user" do |user|
-  # get auth token
-  c = Curl::Easy.http_post('https://login.salesforce.com/services/oauth2/token',
-    'grant_type=password&client_id=3MVG9rFJvQRVOvk4cxTJa7DLkKTD8NuAg5AexmhUWE.Yv.W4.WgDugtPKYczI602iJPhbd6PI0w91GlaOSl_l&client_secret=4614924466188346354&username=soe%40soe.im.streamingapi&password=FORCE2012!!fYPTI4g84jByOYA6fTE924HuG'
-  )
+  # list out available quizzes taken by THE USER by date or TODAY    
+  quizzes = get_quizzes(user)
   
-  auth_response = JSON.parse(c.body_str)
+  # should take only one
+  quiz = quizzes['records'][0]
   
-  query = "select Id, Name, Quiz_Date__c, Number_Correct__c, Total_Time__c, Member__r.Name from Quick_Quiz__c where Quiz_Date__c = 2012-02-20 and Member__r.Name = \'#{user}\'"
-  
-  # get Quick_Quiz__c
-  c = Curl::Easy.http_get("#{auth_response['instance_url']}/services/data/v20.0/query?q=#{CGI::escape(query)}"
-  ) do |curl|
-    curl.headers['Authorization'] = "OAuth #{auth_response['access_token']}"
-  end
-        
-  quiz_response = JSON.parse(c.body_str)
-  
-  @record = quiz_response['records'][0]
-  @id = quiz_response['records'][0]['Id'] 
-  
-  # after this we need to subscribe
-  haml :test
-end
+  # quiz['Member__r']['Name'] # user's name
+  # quiz['Id'] # quiz id (cometd channel name)
+  # quiz['Number_Correct__c'], quiz['Total_Time__c'], quiz['Quiz_Date__c']
+  @quiz = quiz
 
-get '/subscribe/:user' do |user|  
-  client = Faye::Client.new('https://na14.salesforce.com/cometd')
-
-
-        
-  class ForceAuth
-    def outgoing(message, callback)
-      # Again, leave non-subscribe messages alone
-      #unless message['channel'] == '/meta/subscribe'
-        #return callback.call(message)
-      #end
-
-      # Add ext field if it's not present
-      message['ext'] ||= {}
-
-      # Set the auth token
-      #message['ext']['cookies'] = {'sid' : 'ARkAQII53wq3jGdDSELJHImS1as1xLEk2muofNjNaFY0KYWyoqC5VFTz1j2CpNPAP1bksgCBpq_K0FVLoXhP4gyYO2UizYe7'}
-
-      # Carry on and send the message to the server
-      callback.call(message)
-    end
-  end
-  
-  client.add_extension(ForceAuth.new)
-  
-              
-  EM.run {
-    client.subscribe('/foo') do |message|
-      puts message.inspect
-    end
-
-    #client.publish('/foo', 'text' => 'Hello world')
-  }
-  
-  
-  haml :test
+  erb :user
 end

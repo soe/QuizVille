@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="http://quizville-cometd.herokuapp.com/faye.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(function() {
+        var cometd = new Faye.Client('http://quizville-cometd.herokuapp.com/cometd');
+        cometd.subscribe("/q/"+ $("#channel").text(), function(data) {
+          console.log(data);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div>User: <%= @quiz['Member__r']['Name'] %></div>
+    <div># Correct: <%= @quiz['Number_Correct__c'] %></div>
+    <div>Total Time: <%= @quiz['Total_Time__c'] %></div>
+    <div>Date: <%= @quiz['Quiz_Date__c'] %></div>
+    <div id="channel">Subscribe: <%= @quiz['Id'] %></div>
+  </body>
+</html>
