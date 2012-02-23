@@ -19,7 +19,7 @@ def get_quizzes(user = false, date = "today")
   oauth_response = get_oauth_token
 
   if date == "today"
-    date = "2012-02-20"
+    date = "2012-02-23"
   end
   
   # SOQL query for Quick_Quiz__c 
