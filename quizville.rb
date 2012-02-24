@@ -9,7 +9,7 @@ end
 def get_oauth_token
   # get oauth token
   c = Curl::Easy.http_post('https://login.salesforce.com/services/oauth2/token',
-    'grant_type=password&client_id=3MVG9rFJvQRVOvk4cxTJa7DLkKTD8NuAg5AexmhUWE.Yv.W4.WgDugtPKYczI602iJPhbd6PI0w91GlaOSl_l&client_secret=4614924466188346354&username=soe%40soe.im.streamingapi&password=FORCE2012@@jSbIygQ9XKPulmIeEYPPI2lDl'
+    'grant_type=password&client_id='+ ENV['CLIENT_ID'] +'&client_secret='+ ENV['CLIENT_SECRET'] +'&username='+ ENV['USERNAME'] +'&password='+ ENV['PASSWORD'] +''
   )
   
   return JSON.parse(c.body_str)
@@ -42,7 +42,7 @@ def get_answers(user = false, date = "today")
     query += " AND Quick_Quiz__r.Member__r.Name = '#{user}'"
   end
   
-  query += " LIMIT 20"
+  query += " LIMIT 10"
   
   return do_curl(query) 
 end
