@@ -6,25 +6,8 @@
     <script src="/application.js" type="text/javascript"></script>
     <script type="text/javascript">
       $(function() {
-        var cometd = new Faye.Client('http://quizville-cometd.herokuapp.com/cometd', {timeout: 120});
-        cometd.disable('websocket');
         
-        var subscription = cometd.subscribe("/q/demo", function(message) {
-          console.log(message);
-          $('#answers').append(message);
-        });
-        subscription.callback(function() {
-          console.log('Subscription is now active!');
-        });
-        subscription.errback(function(error) {
-          console.log(error.message);
-        });
         
-        var publish = function() {
-          cometd.publish("/q/demo", 
-            {"Name":"QUIZA-0040","Quick_Quiz__c":"a02d0000002cUvKAAU","Id":"a01d0000002j7RFAAY"}
-          );
-        };
         
         
       });
@@ -50,7 +33,7 @@
         <div id="userbar">
           This page is just to demo Cometd transport between server and browser. Messages are published to the channel this page is subscribed to at intervals. So enjoy watching messages flowing in.
         </div>
-        
+        <div id="channel">/q/demo</div>
         <h2>Answers</h2>
         <div id="answers">
           <div class="answer">

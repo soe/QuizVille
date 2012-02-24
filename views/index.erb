@@ -6,19 +6,8 @@
     <script src="/application.js" type="text/javascript"></script>
     <script type="text/javascript">
       $(function() {
-        var cometd = new Faye.Client('http://quizville-cometd.herokuapp.com/cometd', {timeout: 120});
-        cometd.disable('websocket');
         
-        var subscription = cometd.subscribe("/q/*", function(message) {
-          console.log(message);
-          $('#answers').append(message);
-        });
-        subscription.callback(function() {
-          alert('Subscription is now active!');
-        });
-        subscription.errback(function(error) {
-          alert(error.message);
-        });
+        
       });
     </script>
     <script src="http://quizville-cometd.herokuapp.com/cometd.js" type="text/javascript"></script> 
@@ -35,7 +24,7 @@
         <div id="userbar">
           Welcome to QuizVille! Please check out these users: <a href="/user/jenny">Jenny</a>, <a href="/user/john">John</a>, <a href="/user/demo">Demo</a>
         </div>
-        
+        <div id="channel">/q/*</div>
         <h2>Latest Answers</h2>
         <div id="answers">
           <div class="answer">

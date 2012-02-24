@@ -29,7 +29,7 @@ h3 { font-size: 130%; }
 }
 
 a {
-  color: #EBAD1C;
+  color: #40CBF5;
   text-shadow: 1px 1px #444;
 }
 
@@ -51,6 +51,8 @@ a {
   border-bottom: 1px solid #eee;
   margin-bottom: 8px;
 }
+
+#channel { display: none; }
 
 #userbar > div {
   float: left;
