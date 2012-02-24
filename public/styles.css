@@ -52,7 +52,7 @@ a {
   margin-bottom: 8px;
 }
 
-#channel { display: none; }
+#channel, #username { display: none; }
 
 #userbar > div {
   float: left;
