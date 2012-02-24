@@ -24,7 +24,7 @@ $(function() {
   var demo_publish = function() {
     console.log('demo_publish');
     cometd.publish("/q/demo", 
-      {"Name":"QUIZA-0040","Quick_Quiz__c":"a02d0000002cUvKAAU","Id":"a01d0000002j7RFAAY"}
+      {"sobject": {"Id":"~~id~~","Language__c":"~~language~~","Is_Correct__c":"true","Time__c":"0.0"}}
     );
   };
   
