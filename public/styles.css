@@ -1,3 +1,85 @@
 * {
-  font-family: Arial, sans-serif;
+  font-family: 'Doppio One', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  line-height: 150%;
+  color: #222;
+}
+
+body {
+  background-color: #757575;
+}
+
+h1, h2, h3 { padding: 2px 4px; }
+h1 { font-size: 200%; }
+h2 { font-size: 160%; }
+h3 { font-size: 130%; }
+
+#wrapper {
+  margin: 30px auto;
+  width: 680px;
+  background-color: #FFFBDE;
+  border: 1px solid #727272;
+}
+
+#header {
+  min-height: 40px;
+  padding-top: 20px;
+}
+
+a {
+  color: #EBAD1C;
+  text-shadow: 1px 1px #444;
+}
+
+#logo {
+  font-family: 'Alfa Slab One', cursive;
+  text-align: center;
+  color: #EBAD1C;
+  font-size: 280%;
+  text-shadow: 3px 3px #222;
+}
+
+#main {
+  padding: 20px;
+}
+
+#userbar {
+  padding: 10px;
+  background-color: #F7EFB0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 8px;
+}
+
+#userbar > div {
+  float: left;
+  margin-right: 20px;
+}
+
+#answers {
+  padding: 10px 10px;
+  background-color: #E3E2C3;
+}
+
+#answers .answer {
+  padding: 6px;
+  margin: 4px 0;
+  text-align: center;
+}
+
+.answer .user { display: inline-block; width: 22%; text-align: left;}
+.answer .language { display: inline-block; width: 20%; text-align: left;}
+.answer .correct { display: inline-block; width: 18%; text-align: center;}
+.answer .time { display: inline-block; width: 22%; text-align: right;}
+
+#footer {
+  background-color: #b3b3b3;
+  padding: 10px 20px;
+}
+
+/* misc */
+.clear {
+  float: none !important;
+  clear: both;
 }

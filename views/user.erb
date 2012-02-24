@@ -1,6 +1,9 @@
 <html>
   <head>
+    <title>QuizVille</title>
+    <link href="/styles.css" media="screen, projection" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="/application.js" type="text/javascript"></script>
     <script type="text/javascript">
       $(function() {
         var cometd = new Faye.Client('http://quizville-cometd.herokuapp.com/cometd', {timeout: 120});
@@ -19,15 +22,46 @@
       });
     </script>
     <script src="http://quizville-cometd.herokuapp.com/cometd.js" type="text/javascript"></script> 
+    
+    <link href='http://fonts.googleapis.com/css?family=Doppio+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Alfa+Slab+One' rel='stylesheet' type='text/css'>
   </head>
   <body>
-    <div>User: <%= @quiz['Member__r']['Name'] %></div>
-    <div># Correct: <%= @quiz['Number_Correct__c'] %></div>
-    <div>Total Time: <%= @quiz['Total_Time__c'] %></div>
-    <div>Date: <%= @quiz['Quiz_Date__c'] %></div>
-    <div id="channel">Subscribe: <%= @quiz['Id'] %></div>
-    <div id="answers">
-      <h2>Answers</h2>
+    <div id="wrapper">
+      <div id="header">
+        <div id="logo">QuizVille</div>
+      </div>
+      <div id="main">
+        <div id="userbar">
+          <div>User: <%= @quiz['Member__r']['Name'] %></div>
+          <div>Points: <%= @quiz['Number_Correct__c'] %></div>
+          <div>Time taken: <%= @quiz['Total_Time__c'] %> seconds</div>
+          <div style="float: right; margin-right: 0;">Date: <%= @quiz['Quiz_Date__c'] %></div>
+          <div class="clear"></div>
+        </div>
+        
+        <h2>Answers</h2>
+        <div id="answers">
+          <div class="answer">
+            <span class="user">User</span>
+            <span class="language">Language</span>
+            <span class="correct">Correct?</span>
+            <span class="time">Time taken</span>
+          </div>
+          
+          <% @answers.each do |answer| %>
+          <div class="answer" id="<%= answer['Id'] %>">
+            <span class="user"><%= answer['Quick_Quiz__r']['Member__r']['Name'] %></span>
+            <span class="language <%= answer['Language__c'] %>"><%= answer['Language__c'] %></span>
+            <span class="correct <%= answer['Is_Correct__c'] %>"><%= answer['Is_Correct__c'] %></span>
+            <span class="time"><%= answer['Time__c'] %></span>
+          </div>
+          <% end %>
+        </div>
+      </div>
+      <div id="footer">
+        Built by <a href="http://cloudspokes.com/user/soe" target="_blank">@Soe</a>
+      </div>
     </div>
   </body>
 </html>
