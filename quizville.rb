@@ -32,7 +32,7 @@ end
 
 def get_answers(user = false, date = "today")
   if date == "today"
-    date = "2012-02-23"
+    date = Date.today
   end
   
   # SOQL query for Quick_Quiz_Answer__c 
@@ -81,9 +81,9 @@ get "/user/demo" do
   erb :user_demo
 end
 
-get "/user/:user" do |user|
+get "/user/:user/:date" do |user, date|
   # list out available quizzes taken by THE USER by date or TODAY    
-  quizzes = get_quizzes(user)
+  quizzes = get_quizzes(user, date)
     
   if quizzes['records'] == []
     @user = user
