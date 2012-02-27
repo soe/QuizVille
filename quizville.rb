@@ -15,7 +15,7 @@ def get_oauth_token
   return JSON.parse(c.body_str)
 end
 
-def get_quizzes(user = false, Date.today)
+def get_quizzes(user = false, date = Date.today)
   
   # SOQL query for Quick_Quiz__c 
   query = "SELECT Id, Name, Quiz_Date__c, Number_Correct__c, Total_Time__c, Member__r.Name FROM Quick_Quiz__c WHERE Quiz_Date__c = #{date}"
