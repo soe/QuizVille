@@ -17,7 +17,7 @@ end
 
 def get_quizzes(user = false, date = "today")
   if date == "today"
-    date = "2012-02-23"
+    date = Date.today
   end
   
   # SOQL query for Quick_Quiz__c 
