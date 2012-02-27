@@ -78,9 +78,18 @@ a {
   border-bottom: 1px dashed #ddd;
 }
 
+.answer .correct.true, .answer .correct.false {
+  padding-left: 38px;
+  background: url('img/true.png') no-repeat;
+}
+
+.answer .correct.false {
+  background: url('img/true.png');
+}
+
 .answer .user { display: inline-block; width: 0; display: none; text-align: left;}
 .answer .language { display: inline-block; width: 30%; text-align: left;}
-.answer .correct { display: inline-block; width: 24%; text-align: center;}
+.answer .correct { display: inline-block; width: 24%; text-align: left;}
 .answer .time { display: inline-block; width: 22%; text-align: right;}
 
 #footer {
