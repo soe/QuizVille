@@ -75,13 +75,13 @@ get "/user/demo" do
   erb :user_demo
 end
 
-get "/user/:user/?:date" do |user, date|
+get "/user/:user/?:date" do
   # list out available quizzes taken by THE USER by date or TODAY    
-  quizzes = get_quizzes(user, date)
+  quizzes = get_quizzes(params[:user], params[:date])
     
   if quizzes['records'] == []
-    @user = user
-    @date = date
+    @user = params[:user]
+    @date = params[:date]
     
     erb :user_blank
   else
