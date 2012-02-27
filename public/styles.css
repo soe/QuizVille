@@ -34,11 +34,14 @@ a {
 }
 
 #logo {
+  display: block;
   font-family: 'Alfa Slab One', cursive;
   text-align: center;
   color: #EBAD1C;
   font-size: 280%;
   text-shadow: 3px 3px #222;
+  
+  text-decoration: none;
 }
 
 #main {
@@ -75,9 +78,9 @@ a {
   border-bottom: 1px dashed #ddd;
 }
 
-.answer .user { display: inline-block; width: 20%; text-align: left;}
-.answer .language { display: inline-block; width: 24%; text-align: left;}
-.answer .correct { display: inline-block; width: 20%; text-align: center;}
+.answer .user { display: inline-block; width: 0; display: none; text-align: left;}
+.answer .language { display: inline-block; width: 30%; text-align: left;}
+.answer .correct { display: inline-block; width: 24%; text-align: center;}
 .answer .time { display: inline-block; width: 22%; text-align: right;}
 
 #footer {

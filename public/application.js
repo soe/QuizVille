@@ -24,7 +24,7 @@ $(function() {
   var demo_publish = function() {
     console.log('demo_publish');
     cometd.publish("/q/demo", 
-      {"sobject": {"Id":"~~id~~","Language__c":"~~language~~","Is_Correct__c":"true","Time__c":"0.0"}}
+      {"sobject": {"Id":"~~id~~","Language__c":"Ruby","Is_Correct__c":"true","Time__c":"9.9"}}
     );
   };
   

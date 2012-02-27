@@ -54,8 +54,11 @@ def do_curl(query)
   return r
 end
 
+get "/" do
+  redirect to("/#{Date.today}")
+end
 
-get '/' do
+get '/?:date' do
   # list out recent answers taken by users by date or TODAY  
    
   #"Quick_Quiz__r"=>{"Member__r"=>{"Name"=>"John", "attributes"=>{"url"=>"/services/data/v24.0/sobjects/Member__c/a00d0000002jBvOAAU", "type"=>"Member__c"}}, 
@@ -63,7 +66,7 @@ get '/' do
   #"Language__c"=>"Java", "Is_Correct__c"=>true, "Name"=>"QUIZA-0024", 
   #"attributes"=>{"url"=>"/services/data/v24.0/sobjects/Quick_Quiz_Answer__c/a01d0000002j60oAAA", "type"=>"Quick_Quiz_Answer__c"}, 
   #"Time__c"=>20.0, "Id"=>"a01d0000002j60oAAA", "Quick_Quiz__c"=>"a02d0000002cUvKAAU"
-  answers = get_answers()
+  answers = get_answers(false, params[:date])
   
   @answers = answers['records']
   
@@ -75,33 +78,38 @@ get "/user/demo" do
   erb :user_demo
 end
 
-get "/user/:user/?:date" do
-  # list out available quizzes taken by THE USER by date or TODAY    
-  quizzes = get_quizzes(params[:user], params[:date])
-    
-  if quizzes['records'] == []
-    @user = params[:user]
-    @date = params[:date]
-    
-    erb :user_blank
-  else
-    # should take only one - then subscribe to get quiz
-    quiz = quizzes['records'][0]
+get "/user/:user" do |user|
+  redirect to("/user/#{user}/#{Date.today}")
+end
+
+get "/user/:user/:date" do |user, date|
   
-    # quiz['Member__r']['Name'] # user's name
-    # quiz['Id'] # quiz id (cometd channel name)
-    # quiz['Number_Correct__c'], quiz['Total_Time__c'], quiz['Quiz_Date__c']
-    @quiz = quiz
-    
-    #"Quick_Quiz__r"=>{"Member__r"=>{"Name"=>"John", "attributes"=>{"url"=>"/services/data/v24.0/sobjects/Member__c/a00d0000002jBvOAAU", "type"=>"Member__c"}}, 
-    #"attributes"=>{"url"=>"/services/data/v24.0/sobjects/Quick_Quiz__c/a02d0000002cUvKAAU", "type"=>"Quick_Quiz__c"}}, 
-    #"Language__c"=>"Java", "Is_Correct__c"=>true, "Name"=>"QUIZA-0024", 
-    #"attributes"=>{"url"=>"/services/data/v24.0/sobjects/Quick_Quiz_Answer__c/a01d0000002j60oAAA", "type"=>"Quick_Quiz_Answer__c"}, 
-    #"Time__c"=>20.0, "Id"=>"a01d0000002j60oAAA", "Quick_Quiz__c"=>"a02d0000002cUvKAAU"
-    answers = get_answers()
-    
-    @answers = answers['records']
-    
-    erb :user
+  # list out available quizzes taken by THE USER by date or TODAY  
+  quizzes = get_quizzes(user, date)
+  
+  if quizzes['records'] == []
+   @user = user
+   @date = date
+
+   erb :user_blank
+  else
+   # should take only one - then subscribe to get quiz
+   quiz = quizzes['records'][0]
+
+   # quiz['Member__r']['Name'] # user's name
+   # quiz['Id'] # quiz id (cometd channel name)
+   # quiz['Number_Correct__c'], quiz['Total_Time__c'], quiz['Quiz_Date__c']
+   @quiz = quiz
+
+   #"Quick_Quiz__r"=>{"Member__r"=>{"Name"=>"John", "attributes"=>{"url"=>"/services/data/v24.0/sobjects/Member__c/a00d0000002jBvOAAU", "type"=>"Member__c"}}, 
+   #"attributes"=>{"url"=>"/services/data/v24.0/sobjects/Quick_Quiz__c/a02d0000002cUvKAAU", "type"=>"Quick_Quiz__c"}}, 
+   #"Language__c"=>"Java", "Is_Correct__c"=>true, "Name"=>"QUIZA-0024", 
+   #"attributes"=>{"url"=>"/services/data/v24.0/sobjects/Quick_Quiz_Answer__c/a01d0000002j60oAAA", "type"=>"Quick_Quiz_Answer__c"}, 
+   #"Time__c"=>20.0, "Id"=>"a01d0000002j60oAAA", "Quick_Quiz__c"=>"a02d0000002cUvKAAU"
+   answers = get_answers(user, date)
+
+   @answers = answers['records']
+
+   erb :user
   end
 end
