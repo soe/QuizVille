@@ -87,6 +87,7 @@ get "/user/:user/:date" do |user, date|
     
   if quizzes['records'] == []
     @user = user
+    @date = date
     
     erb :user_blank
   else
