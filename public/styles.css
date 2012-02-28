@@ -84,7 +84,7 @@ a {
 }
 
 .answer .correct.false {
-  background: url('img/true.png') no-repeat;
+  background: url('img/false.png') no-repeat;
 }
 
 .answer .user { display: inline-block; width: 0; display: none; text-align: left;}
