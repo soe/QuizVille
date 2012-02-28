@@ -23,12 +23,21 @@ $(function() {
   
   var demo_publish = function() {
     console.log('demo_publish');
+    var languages = ["Ruby", "Javascript", "Python", "C++", "Scala"];
+    var language = languages[Math.floor(Math.random() * languages.length)];
+    var time = Math.floor(Math.random() * 11) + '.' + Math.floor(Math.random() * 11);
+    var correct = Array('T', 'F')[Math.floor(Math.random() * 2)];
     cometd.publish("/q/demo", 
-      {"sobject": {"Id":"~~id~~","Language__c":"Ruby","Is_Correct__c":"true","Time__c":"9.9"}}
+      {"sobject": {
+        "Id":"~~id~~",
+        "Language__c": language,
+        "Is_Correct__c": correct,
+        "Time__c": time}
+      }
     );
   };
   
   if(channel == '/q/demo') {
-    setInterval (demo_publish, 10000);
+    setInterval (demo_publish, 3000);
   }
 });
