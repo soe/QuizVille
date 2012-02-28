@@ -4,6 +4,9 @@ require 'json'
 require 'cgi'
 
 helpers do
+  def get_server
+    ENV['SERVER']
+  end
 end
 
 def get_oauth_token
